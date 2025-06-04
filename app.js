@@ -8,13 +8,12 @@ const experiences = [
     lieu: "Marseille",
     domaine: "Aéronautique",
     duree: "6 mois",
-    objectifs: "Définition d'un pipeline de traitement des données pour l'extraction de textes à partir de fichiers PDF",
+    objectifs: "Au sein d’Airbus Helicopters, j’ai accompagné la transformation de ses processus de gestion et d’analyse de données, en mettant en place des solutions pour le traitement et la visualisation de données multi-sources, tout en améliorant la qualité et la fiabilité des indicateurs clés de performance (KPI).",
     realisations: [
-      "Création de tableaux de bord sur la plateforme Skywise Contour pour visualiser des KPI",
-      "Edition de dashboard avec Looker Studio",
-      "Inventaire des données à partir de sources multiples (MySQL, MongoDB, Oracle, Excel)",
-      "Qualité des données sur les liens rattachés aux Engineering Change Proposal (ECP)",
-      "Élaboration de processus ETL avec Skywise Pipeline Builder et Code Repository (PySpark et SQL)"
+      "Conception et développement de tableaux de bord interactifs sur Skywise Contour et Looker Studio pour le suivi des indicateurs clés de performance bureau d'étude.",
+      "Centralisation et fiabilisation des inventaires de données issues de multiples sources (MySQL, MongoDB, Oracle, Excel).",
+      "Contrôle qualité des données (ECP/ECR), vérification des liens avec la documentation réglementaire et historique.",
+      "Mise en place de pipelines ETL automatisés avec Skywise Pipeline Builder, PySpark et SQL pour l’intégration et le traitement de flux de données à grande échelle."
     ],
     technologies: ["Skywise", "Python", "PySpark", "SQL", "Oracle Database", "Git", "Looker", "JIRA"]
   },
