@@ -1,0 +1,151 @@
+[
+  {
+    "id": 1,
+    "periode": "Février 2025 - Septembre 2024",
+    "poste": "Data Analyst",
+    "entreprise": "Airbus Helicopters",
+    "lieu": "Marseille",
+    "domaine": "Aéronautique",
+    "duree": "6 mois",
+    "objectifs": "Au sein d’Airbus Helicopters, j’ai accompagné la transformation de ses processus de gestion et d’analyse de données, en mettant en place des solutions pour le traitement et la visualisation de données multi-sources, tout en améliorant la qualité et la fiabilité des indicateurs clés de performance (KPI).",
+    "realisations": [
+      "Conception et développement de tableaux de bord interactifs sur Skywise Contour et Looker Studio pour le suivi des indicateurs clés de performance bureau d'étude.",
+      "Centralisation et fiabilisation des inventaires de données issues de multiples sources (MySQL, MongoDB, Oracle, Excel).",
+      "Contrôle qualité des données (ECP/ECR), vérification des liens avec la documentation réglementaire et historique.",
+      "Mise en place de pipelines ETL automatisés avec Skywise Pipeline Builder, PySpark et SQL pour l’intégration et le traitement de flux de données à grande échelle."
+    ],
+    "technologies": ["Skywise", "Python", "PySpark", "SQL", "Oracle Database", "Git", "Looker", "JIRA"]
+  },
+  {
+    "id": 2,
+    "periode": "Juin 2024 - Mai 2024",
+    "poste": "Machine Learning Engineer",
+    "entreprise": "Airbus Helicopters",
+    "lieu": "Marseille",
+    "domaine": "Aéronautique",
+    "duree": "1 mois",
+    "objectifs": "Dans le cadre de ce projet, j’ai contribué à la création d’un LLM spécialisé sur les documents techniques, en automatisant le traitement de documents PDF, en déployant une infrastructure de recherche avancée, et en facilitant l’intégration de modèles d’intelligence artificielle dans les processus industriels.",
+    "realisations": [
+      "Conception et mise en œuvre d’un pipeline pour le découpage, la préparation et la vectorisation de documents PDF, en vue de créer un modèle de langage (LLM) spécialisé adapté à l’environnement industriel.",
+      "Installation, configuration et optimisation d’Elasticsearch et Kibana pour l’indexation et la recherche avancée de documents vectorisés.",
+      "Création d’une application Python permettant la manipulation automatisée de documents PDF et leur ingestion dans Elasticsearch via des APIs personnalisées.",
+      "Sélection et intégration de modèles d’embeddings avec LogStash pour optimiser la pertinence des recherches sémantiques."
+    ],
+    "technologies": ["Elastic Stack", "Kibana", "Python", "Elasticsearch", "Logstash"]
+  },
+  {
+    "id": 3,
+    "periode": "Avril 2024 - Juin 2023",
+    "poste": "DataOps",
+    "entreprise": "Airbus Helicopters",
+    "lieu": "Marseille",
+    "domaine": "Aéronautique",
+    "duree": "11 mois",
+    "objectifs": "Grâce à une approche DataOps, j’ai contribué à la modernisation du datawarehouse et à son interfaçage avec Skywise, en automatisant et en optimisant les flux de données, en améliorant la qualité et la traçabilité des informations, et en facilitant l’intégration de nouvelles sources et la maintenance des traitements.",
+    "realisations": [
+      "RUN:",
+      "Maintenance opérationnelle : Suivi des performances avec l’ordonnanceur Apache Airflow.",
+      "upport utilisateur : Assistance aux métiers pour l’ingestion de nouveaux flux de données (fichiers Excel et requêtes SQL) et diagnostic des pannes avec suivi et historisation des requêtes via GitHub.",
+      "Analyse des patterns majoritaires pour améliorer la qualité et les liens entre les données.",
+      "BUILD:",
+      "Migration d’un séquenceur Windows vers Apache Airflow avec une amélioration des conditions de RUN.",
+      "Migration des jobs Talend en requêtes SQL via ingénierie inverse pour conserver les règles métiers et assurer l’interopérabilité des données.",
+      "Conception d’une classe Python en logique data factory avec Pandas pour Airflow.",
+      "Data lineage des requêtes SQL pour définir les dépendances entre les DAGs dans Airflow.",
+      "POC avec dbt pour améliorer la cohérence des requêtes SQL, générer un dictionnaire des données et produire un data lineage automatisé."
+    ],
+    "technologies": ["Airflow","DBT", "SQL", "Talend", "Python", "Git", "Jira", "Dashboard", "Skywise", "PySpark"]
+  },
+  {
+    "id": 21,
+    "periode": "Novembre 2023",
+    "poste": "Formateur Data Analyst",
+    "entreprise": "Le Wagon",
+    "lieu": "Marseille",
+    "domaine": "Formation",
+    "duree": "1 mois",
+    "objectifs": "Former et accompagner les apprenants dans la maîtrise de l’analyse de données avec Python, en couvrant la collecte, la manipulation et la visualisation de données issues de sources variées (bases de données, API, fichiers), ainsi que la création et l’utilisation de packages Python personnalisés pour automatiser et industrialiser leurs analyses.",
+    "realisations": [
+      "Manipulation de différentes sources de données telles que BigQuery, MySQL et MongoDB.",
+      "Démonstration de l’utilisation de Jupyter Notebook et Lab avec des packages personnalisés.",
+      "Démonstration de l’utilisation des bibliothèques Matplotlib et Seaborn avec Pandas et Numpy (scatter plot, violin plot, etc.)",
+      "Création de packages Python."
+    ],
+    "technologies": ["Python", "Pandas","Polars", "Matplotlib & Seaborn", "Jupyter Notebook", "BigQuery", "SQLile"]
+  },
+  {
+    "id": 4,
+    "periode": "Mai 2023 - Février 2023",
+    "poste": "Data Manager",
+    "entreprise": "BT4DM",
+    "lieu": "Bruxelles",
+    "domaine": "Pharmaceutique",
+    "duree": "4 mois",
+    "objectifs": "Ce projet m’a permis de développer une expertise en gestion de données industrielles dans un contexte pharmaceutique réglementé, en assurant la standardisation, la centralisation et l’historisation des données de production via des solutions IoT avancées, tout en respectant les exigences qualité et conformité du secteur.",
+    "realisations": [
+      "Audit des besoins du client concernant les objectifs du projet.",
+      "Montée en compétences sur normes ISO 95, ISO 98, ISO 99, GMP, AMDEC",
+      "Développement cycle en V",
+      "Création d'un schéma technique concernant le POC avec définition nomenclature",
+      "Déploiement de deux machines virtuelles Windows Server sur le réseau interne : Hub IoT Kepware"
+    ],
+    "technologies": ["Windows Server", "Office365", "VPN", "Kepware", "Jira", "Cycle en V"]
+  },
+  {
+    "id": 5,
+    "periode": "Février 2023 - Janvier 2023",
+    "poste": "Formateur Data Science",
+    "entreprise": "GOCONCEPT",
+    "lieu": "Lyon",
+    "domaine": "Conseil",
+    "duree": "1 mois",
+    "objectifs": "Créer des formations introductives sur les sujets data accessibles aux personnes ayant des bases en Python",
+    "realisations": [
+      "Définition des axes pédagogiques : data engineering & cloud, visualisation de données & sémiologie graphique, machine learning & IA,",
+      "Data Data engineering & cloud",
+      "Visualisation de données & sémiologie graphique",
+      "Évaluation des connaissances",
+      "Visualisation de données et sémiologie graphique",
+      "Animation pédagogique"
+    ],
+    "technologies": ["Python", "PowerBI", "SQL", "Scaleway", "API REST","Statistiques"]
+  },
+  {
+    "id": 6,
+    "periode": "Septembre 2020 - Août 2022",
+    "poste": "DataOps - Data Engineer",
+    "entreprise": "IDATE",
+    "lieu": "Montpellier",
+    "domaine": "Conseil Télécom et Digital",
+    "duree": "24 mois",
+    "objectifs": "Concevoir, modéliser et déployer une infrastructure IT orientée données et cloud, permettant de rationaliser la gestion, la migration et la valorisation des données métiers, tout en facilitant l’accès et la visualisation des informations stratégiques.",
+    "realisations": [
+      "Audit des collaborateurs pour déterminer leurs méthodes de travail",
+      "Définition d'une base de données relationnelle avec Merise (MCD – MOD)",
+      "Dockeurisation de la base de données relationnelle MySQL",
+      "Création d'un outil de redressement et de qualification via Python",
+      "Définition d'une interface de type API Restful commerciale",
+      "Intégration de PowerBI à l'API Restful"
+    ],
+    "technologies": ["Python", "NodeJS", "ExpressJS", "PrismaJS", "Scaleway", "Heroku", "PostgreSQL", "Conda", "Postman", "GitHub","PowerBI"]
+  },
+  {
+    "id": 7,
+    "periode": "Février 2022 - Août 2022",
+    "poste": "Data Analyste",
+    "entreprise": "IDATE, OMS, Université de Montpellier, Université McGILL",
+    "lieu": "Montpellier",
+    "domaine": "Santé Digitale",
+    "duree": "7 mois",
+    "objectifs": "Mener une étude pour l'OMS abordant différents aspects de la santé bucco-dentaire auprès de 170 gouvernements",
+    "realisations": [
+      "Conception informatique de l'enquête",
+      "Sélection de la méthode de diffusion",
+      "Suivi des réponses et fichier de relances",
+      "Édition d'un suivi visuel pour suivre le déroulement des réponses",
+      "Jointure via Python pour des informations complémentaires",
+      "Création d'un dashboard visuel avec Dataviz de Sphinx"
+    ],
+    "technologies": ["Python", "Pandas", "Sphinx", "Conda"]
+  }
+]
