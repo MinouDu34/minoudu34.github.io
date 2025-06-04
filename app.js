@@ -1,3 +1,12 @@
+fetch('chemin/vers/ton/fichier.json')
+  .then(response => response.json())
+  .then(data => {
+    // Ici, 'data' contient l'objet JavaScript correspondant au JSON
+    console.log(data);
+    // Tu peux manipuler les données ici
+  })
+  .catch(error => console.error('Erreur de chargement:', error));
+
 // Données des expériences depuis le JSON fourni
 const experiences = [
   {
@@ -25,12 +34,12 @@ const experiences = [
     lieu: "Marseille",
     domaine: "Aéronautique",
     duree: "1 mois",
-    objectifs: "Définition d'un pipeline de traitement des données pour l'extraction de textes à partir de fichiers PDF",
+    objectifs: "Dans le cadre de ce projet, j’ai contribué à la création d’un LLM spécialisé sur les documents techniques, en automatisant le traitement de documents PDF, en déployant une infrastructure de recherche avancée, et en facilitant l’intégration de modèles d’intelligence artificielle dans les processus industriels.",
     realisations: [
-      "Création d'un pipeline en Python pour extraire les données textuelles du document pdf",
-      "Définition d'une stratégie pour la vectorisation du document entre sémantique et longueur",
-      "Vectorisation du texte via un réseau de neurones avec le module Machine Learning d'ElasticSearch",
-      "Construction des requêtes et vectorisation pour trouver les termes voisins"
+      "Conception et mise en œuvre d’un pipeline pour le découpage, la préparation et la vectorisation de documents PDF, en vue de créer un modèle de langage (LLM) spécialisé adapté à l’environnement industriel.",
+      "Installation, configuration et optimisation d’Elasticsearch et Kibana pour l’indexation et la recherche avancée de documents vectorisés.",
+      "Création d’une application Python permettant la manipulation automatisée de documents PDF et leur ingestion dans Elasticsearch via des APIs personnalisées.",
+      "Sélection et intégration de modèles d’embeddings avec LogStash pour optimiser la pertinence des recherches sémantiques."
     ],
     technologies: ["Elastic Stack", "Kibana", "Python", "Elasticsearch", "Logstash"]
   },
@@ -42,18 +51,37 @@ const experiences = [
     lieu: "Marseille",
     domaine: "Aéronautique",
     duree: "11 mois",
-    objectifs: "Modernisation d'un datawarehouse via une approche DataOps et interfaçage avec Skywise",
+    objectifs: "Grâce à une approche DataOps, j’ai contribué à la modernisation du datawarehouse et à son interfaçage avec Skywise, en automatisant et en optimisant les flux de données, en améliorant la qualité et la traçabilité des informations, et en facilitant l’intégration de nouvelles sources et la maintenance des traitements.",
     realisations: [
-      "RUN: Maintenance opérationnelle avec Apache Airflow",
-      "Support utilisateur pour l'ingestion de nouveaux flux de données",
-      "Analyse des patterns majoritaires pour améliorer la qualité des données",
-      "BUILD: Migration d'un séquenceur Windows vers Apache Airflow",
-      "Migration des jobs Talend en requêtes SQL via ingénierie inverse",
-      "Conception d'une classe Python en logique data factory avec Pandas",
-      "Data lineage des requêtes SQL pour définir les dépendances entre les DAGs",
-      "POC avec dbt pour améliorer la cohérence des requêtes SQL"
+      "RUN:",
+      "Maintenance opérationnelle : Suivi des performances avec l’ordonnanceur Apache Airflow.",
+      "upport utilisateur : Assistance aux métiers pour l’ingestion de nouveaux flux de données (fichiers Excel et requêtes SQL) et diagnostic des pannes avec suivi et historisation des requêtes via GitHub.",
+      "Analyse des patterns majoritaires pour améliorer la qualité et les liens entre les données.",
+      "BUILD:",
+      "Migration d’un séquenceur Windows vers Apache Airflow avec une amélioration des conditions de RUN.",
+      "Migration des jobs Talend en requêtes SQL via ingénierie inverse pour conserver les règles métiers et assurer l’interopérabilité des données.",
+      "Conception d’une classe Python en logique data factory avec Pandas pour Airflow.",
+      "Data lineage des requêtes SQL pour définir les dépendances entre les DAGs dans Airflow.",
+      "POC avec dbt pour améliorer la cohérence des requêtes SQL, générer un dictionnaire des données et produire un data lineage automatisé."
     ],
-    technologies: ["Airflow", "SQL", "Talend", "Python", "Git", "Jira", "Dashboard", "Skywise", "PySpark"]
+    technologies: ["Airflow","DBT", "SQL", "Talend", "Python", "Git", "Jira", "Dashboard", "Skywise", "PySpark"]
+  },
+  {
+    id: 21,
+    periode: "Novembre 2023",
+    poste: "Formateur Data Analyst",
+    entreprise: "Le Wagon",
+    lieu: "Marseille",
+    domaine: "Formation",
+    duree: "1 mois",
+    objectifs: "Former et accompagner les apprenants dans la maîtrise de l’analyse de données avec Python, en couvrant la collecte, la manipulation et la visualisation de données issues de sources variées (bases de données, API, fichiers), ainsi que la création et l’utilisation de packages Python personnalisés pour automatiser et industrialiser leurs analyses.",
+    realisations: [
+      "Manipulation de différentes sources de données telles que BigQuery, MySQL et MongoDB.",
+      "Démonstration de l’utilisation de Jupyter Notebook et Lab avec des packages personnalisés.",
+      "Démonstration de l’utilisation des bibliothèques Matplotlib et Seaborn avec Pandas et Numpy (scatter plot, violin plot, etc.)",
+      "Création de packages Python."
+    ],
+    technologies: ["Python", "Pandas","Polars", "Matplotlib & Seaborn", "Jupyter Notebook", "BigQuery", "SQLile"]
   },
   {
     id: 4,
@@ -63,15 +91,15 @@ const experiences = [
     lieu: "Bruxelles",
     domaine: "Pharmaceutique",
     duree: "4 mois",
-    objectifs: "Projet de type POC en data management dans le cadre de la constitution d'un système MES LES",
+    objectifs: "Ce projet m’a permis de développer une expertise en gestion de données industrielles dans un contexte pharmaceutique réglementé, en assurant la standardisation, la centralisation et l’historisation des données de production via des solutions IoT avancées, tout en respectant les exigences qualité et conformité du secteur.",
     realisations: [
-      "Audit des besoins du client concernant les objectifs du projet",
+      "Audit des besoins du client concernant les objectifs du projet.",
       "Montée en compétences sur normes ISO 95, ISO 98, ISO 99, GMP, AMDEC",
       "Développement cycle en V",
       "Création d'un schéma technique concernant le POC avec définition nomenclature",
-      "Déploiement de deux machines virtuelles Windows Server sur le réseau interne"
+      "Déploiement de deux machines virtuelles Windows Server sur le réseau interne : Hub IoT Kepware"
     ],
-    technologies: ["Windows Server", "Office365", "VPN", "Kepware", "Jira"]
+    technologies: ["Windows Server", "Office365", "VPN", "Kepware", "Jira", "Cycle en V"]
   },
   {
     id: 5,
@@ -83,15 +111,14 @@ const experiences = [
     duree: "1 mois",
     objectifs: "Créer des formations introductives sur les sujets data accessibles aux personnes ayant des bases en Python",
     realisations: [
-      "Structuration du plan du cours",
-      "Data engineering et cloud: Différences entre ETL et ELT",
-      "Présentation des bases de données relationnelles et non relationnelles",
-      "Conception orientée API Restful",
+      "Définition des axes pédagogiques : data engineering & cloud, visualisation de données & sémiologie graphique, machine learning & IA,",
+      "Data Data engineering & cloud",
+      "Visualisation de données & sémiologie graphique",
+      "Évaluation des connaissances",
       "Visualisation de données et sémiologie graphique",
-      "Interprétation et réduction dimensionnelle",
-      "QCM de 10 questions et cas pratique sur un sujet ETL"
+      "Animation pédagogique"
     ],
-    technologies: ["Python", "Docker", "PowerBI", "Scaleway", "API REST"]
+    technologies: ["Python", "PowerBI", "SQL", "Scaleway", "API REST","Statistiques"]
   },
   {
     id: 6,
@@ -101,7 +128,7 @@ const experiences = [
     lieu: "Montpellier",
     domaine: "Conseil Télécom et Digital",
     duree: "24 mois",
-    objectifs: "Créer des visualisations statiques et orienter vers une infrastructure type API Restful",
+    objectifs: "Concevoir, modéliser et déployer une infrastructure IT orientée données et cloud, permettant de rationaliser la gestion, la migration et la valorisation des données métiers, tout en facilitant l’accès et la visualisation des informations stratégiques.",
     realisations: [
       "Audit des collaborateurs pour déterminer leurs méthodes de travail",
       "Définition d'une base de données relationnelle avec Merise (MCD – MOD)",
@@ -110,7 +137,7 @@ const experiences = [
       "Définition d'une interface de type API Restful commerciale",
       "Intégration de PowerBI à l'API Restful"
     ],
-    technologies: ["Python", "NodeJS", "ExpressJS", "PrismaJS", "Scaleway", "Heroku", "PostgreSQL", "Conda", "Postman", "GitHub"]
+    technologies: ["Python", "NodeJS", "ExpressJS", "PrismaJS", "Scaleway", "Heroku", "PostgreSQL", "Conda", "Postman", "GitHub","PowerBI"]
   },
   {
     id: 7,
@@ -154,7 +181,8 @@ const domainColors = {
   "Pharmaceutique": "#8b5cf6",
   "Conseil": "#ec4899",
   "Conseil Télécom et Digital": "#ff6b9d",
-  "Santé Digitale": "#8b5cf6"
+  "Santé Digitale": "#8b5cf6",
+  "Formation": "#ec4899"
 };
 
 /**
