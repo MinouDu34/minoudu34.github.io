@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Nieder-Fioletti</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { 
+            --bg: #020105; 
+            --text-main: #ffffff; 
+            --text-muted: #cbd5e1; 
+
+            /* VIVID PALETTE */
+            --gradient-1: #ff0080; 
+            --gradient-2: #7928ca; 
+            --gradient-3: #ff4d4d; 
+            --gradient-4: #00e0ff; 
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            line-height: 1.6; 
+        }
+
+        /* TRANSITIONS */
+        .fade-text {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .fade-text.hiding {
+            opacity: 0;
+            transform: translateY(-5px); 
+        }
+
+        /* BRAND & NAV CONTAINER - DESKTOP (FIXED) */
+        .brand-container {
+            position: fixed; top: 30px; left: 35px; z-index: 1000;
+            display: flex; flex-direction: column; align-items: flex-start; gap: 12px;
+            max-width: 250px; 
+        }
+
+        .brand-name {
+            font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1.1rem; 
+            color: white; text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            background: rgba(20, 20, 30, 0.85);
+            backdrop-filter: blur(16px);
+            padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: 0.3s; text-decoration: none;
+            white-space: nowrap; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .brand-name:hover { border-color: rgba(255,255,255,0.4); background: rgba(255, 255, 255, 0.95); color: black; }
+
+        /* NAV MENU (DESKTOP) */
+        .nav-menu {
+            background: rgba(15, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+            padding: 8px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex; flex-direction: column; gap: 4px;
+            width: 100%; 
+            min-width: 160px;
+        }
+
+        .nav-link {
+            color: var(--text-muted); text-decoration: none; font-size: 0.9rem; font-weight: 500;
+            transition: 0.2s; padding: 10px 16px; border-radius: 10px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .nav-link:hover { color: white; background: rgba(255,255,255,0.15); transform: translateX(5px); }
+        .nav-link i { font-size: 0.9rem; width: 18px; text-align: center; color: var(--gradient-4); opacity: 0.9; }
+
+        /* MOBILE NAV (HIDDEN ON DESKTOP) */
+        .mobile-nav-bar {
+            display: none; /* Default hidden */
+            position: fixed; top: 0; left: 0; width: 100%; height: 70px;
+            background: rgba(10, 10, 15, 0.9); backdrop-filter: blur(15px);
+            z-index: 2000;
+            align-items: center; justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .mobile-logo { font-family: 'Outfit'; font-weight: 700; color: white; font-size: 1.1rem; text-decoration: none; }
+        .mobile-toggle { font-size: 1.5rem; color: white; cursor: pointer; }
+
+        .mobile-menu-overlay {
+            position: fixed; top: 70px; left: 0; width: 100%; height: 0;
+            background: rgba(5, 5, 10, 0.98);
+            z-index: 1999; overflow: hidden; transition: 0.3s ease-in-out;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+        }
+        .mobile-menu-overlay.active { height: calc(100vh - 70px); }
+        .mobile-link { font-family: 'Outfit'; font-size: 1.5rem; color: white; text-decoration: none; font-weight: 700; }
+
+        .pill-switch-container {
+            position: fixed; top: 25px; right: 35px; z-index: 1000;
+            background: rgba(20, 20, 30, 0.8); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px;
+            padding: 4px; display: flex; cursor: pointer; width: 140px; height: 44px;
+            align-items: center; justify-content: space-between;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .pill-slider {
+            position: absolute; top: 4px; left: 4px; width: 64px; height: 34px;
+            background: white; border-radius: 20px;
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1); z-index: 1;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .pill-switch-container.en-active .pill-slider { transform: translateX(66px); }
+        .pill-option {
+            flex: 1; text-align: center; font-family: 'Outfit'; font-weight: 700; font-size: 0.9rem;
+            z-index: 2; transition: color 0.3s; user-select: none; line-height: 34px;
+        }
+        .pill-option.fr { color: #000; }
+        .pill-option.en { color: rgba(255,255,255,0.6); }
+        .pill-switch-container.en-active .pill-option.fr { color: rgba(255,255,255,0.6); }
+        .pill-switch-container.en-active .pill-option.en { color: #000; }
+
+        /* BACKGROUND */
+        .aurora-container { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; z-index: -2; overflow: hidden; pointer-events: none; }
+        @keyframes floatLiquid {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(30px, -50px) scale(1.1) rotate(5deg); } 
+            66% { transform: translate(-20px, 20px) scale(0.9) rotate(-3deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        }
+        .aurora-blob { 
+            position: absolute; border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; 
+            filter: blur(80px); 
+            animation: floatLiquid 20s infinite ease-in-out alternate; 
+            mix-blend-mode: hard-light; opacity: 0.5; 
+        }
+        .blob-1 { top: -10%; left: -10%; width: 60vh; height: 60vh; background: var(--gradient-2); }
+        .blob-2 { bottom: -10%; right: -10%; width: 70vh; height: 70vh; background: var(--gradient-1); animation-delay: -5s; }
+        .blob-3 { top: 30%; left: 30%; width: 50vh; height: 50vh; background: var(--gradient-4); animation-delay: -8s; opacity: 0.4; }
+
+        .hex-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='rgba(255,255,255,0.08)' stroke-width='1'/%3E%3C/svg%3E");
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+
+        header { 
+            min-height: 85vh; 
+            display: flex; flex-direction: column; justify-content: center; 
+            position: relative; 
+            padding-top: 100px; 
+        }
+
+        @keyframes liquidText { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .hero-label { 
+            font-family: 'Outfit'; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 20px; 
+            background: linear-gradient(90deg, var(--gradient-4), var(--gradient-1), var(--gradient-3)); background-size: 200% 200%; 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            animation: liquidText 3s linear infinite; filter: drop-shadow(0 0 5px rgba(255, 0, 128, 0.5));
+        }
+        h1 { 
+            font-family: 'Outfit', sans-serif; font-size: 5rem; line-height: 1; font-weight: 800; margin-bottom: 30px; 
+            background: linear-gradient(to bottom, #ffffff 0%, #a0a0a0 50%, #ffffff 100%); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+            filter: drop-shadow(0 2px 0px rgba(255,255,255,0.1));
+            min-height: 160px;
+        }
+        .hero-desc { 
+            font-size: 1.35rem; color: var(--text-muted); max-width: 700px; margin-bottom: 40px; 
+            font-weight: 300;
+            border-left: 4px solid var(--gradient-4); padding-left: 20px;
+        }
+        .hero-desc strong { color: white; font-weight: 600; }
+
+        .cursor { display: inline-block; width: 4px; height: 1em; background-color: var(--gradient-4); animation: blink 1s step-end infinite; margin-left: 5px; vertical-align: middle; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .cta-group { display: flex; gap: 20px; }
+        .btn { padding: 16px 32px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: 0.3s; font-family: 'Outfit'; position: relative; overflow: hidden; }
+        .btn-primary { 
+            color: white; border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.2), 0 0 20px rgba(var(--gradient-1), 0.4);
+        }
+        .btn-primary:hover { transform: scale(1.05); box-shadow: inset 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255, 0, 128, 0.6); border-color: white; }
+        .btn-secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: white; }
+
+        .section-header { font-family: 'Outfit'; font-size: 2.5rem; margin: 100px 0 50px; display: flex; align-items: center; gap: 15px; scroll-margin-top: 100px; }
+        .section-header::after { content: ''; flex-grow: 1; height: 2px; background: linear-gradient(90deg, rgba(255,255,255,0.5), transparent); border-radius: 2px; }
+
+        /* CARDS */
+        .mindset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 80px; }
+        .mindset-card {
+            background: rgba(20, 20, 28, 0.85); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px; padding: 25px; transition: 0.3s; backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .mindset-card:hover { background: rgba(30, 30, 40, 0.95); transform: translateY(-5px); border-color: var(--gradient-4); }
+        .mindset-icon { font-size: 2rem; color: var(--gradient-4); margin-bottom: 15px; }
+        .mindset-title { font-family: 'Outfit'; font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; color: white; }
+        .mindset-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+
+        .cards-grid { display: grid; grid-template-columns: 1fr; gap: 40px; }
+
+        .liquid-card {
+            position: relative;
+            background: rgba(18, 18, 25, 0.7); border-radius: 30px; padding: 40px;
+            backdrop-filter: blur(50px) saturate(150%); -webkit-backdrop-filter: blur(50px) saturate(150%);
+            box-shadow: inset 0 0 20px 2px rgba(255, 255, 255, 0.03), 0 20px 50px -10px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08); transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: visible; display: flex; flex-direction: column;
+        }
+        .liquid-card::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 120px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%);
+            border-radius: 30px 30px 100% 100%; opacity: 0.6; pointer-events: none; filter: blur(5px);
+        }
+        .liquid-card::before {
+            content: ""; position: absolute; inset: 0; border-radius: 30px; padding: 2px; 
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.9), transparent 40%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+            pointer-events: none; opacity: 0; transition: opacity 0.5s;
+        }
+        .liquid-card:hover::before { opacity: 1; }
+        .liquid-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 30px 60px -10px rgba(0, 0, 0, 0.7), 0 0 40px rgba(var(--gradient-2), 0.2); }
+
+        .liquid-card.featured {
+            background: rgba(15, 25, 35, 0.8); border-color: rgba(0, 224, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 224, 255, 0.1), inset 0 0 20px rgba(0, 224, 255, 0.05);
+        }
+        .liquid-card.featured::after {
+            background: linear-gradient(180deg, rgba(0, 224, 255, 0.1) 0%, transparent 100%);
+        }
+
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; position: relative; z-index: 2; }
+        .exp-role { font-family: 'Outfit'; font-size: 2rem; font-weight: 800; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .exp-company { color: white; font-weight: 700; letter-spacing: 1px; background: linear-gradient(90deg, #fff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .exp-date { font-size: 0.9rem; color: #fff; border: 1px solid rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 50px; background: rgba(0,0,0,0.2); font-weight: 600; }
+
+        .exp-list { margin: 25px 0; list-style: none; color: var(--text-muted); font-size: 1.05rem; position: relative; z-index: 2; }
+        .exp-list li { margin-bottom: 15px; padding-left: 25px; position: relative; }
+        .exp-list li::before { content: '•'; color: var(--gradient-4); position: absolute; left: 0; font-size: 1.5rem; line-height: 1rem; top: 5px; text-shadow: 0 0 10px var(--gradient-4); }
+
+        .tech-flow { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 2; }
+        .tech-badge { font-size: 0.85rem; padding: 8px 16px; border-radius: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); color: white; font-weight: 600; backdrop-filter: blur(5px); transition: 0.2s; }
+        .tech-badge:hover { background: white; color: black; box-shadow: 0 0 15px white; }
+
+        .skills-grid { 
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch;
+        }
+        .skill-box { text-align: left; padding: 35px; height: 100%; } 
+        .skill-icon { font-size: 2.5rem; margin-bottom: 20px; background: linear-gradient(135deg, var(--gradient-2), var(--gradient-4)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 15px rgba(0, 224, 255, 0.5)); }
+        .skill-title { font-family: 'Outfit'; font-weight: 700; font-size: 1.5rem; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+
+        .tech-list-vertical { display: flex; flex-direction: column; gap: 15px; flex-grow: 1; }
+        .tech-item { display: flex; flex-direction: column; position: relative; cursor: pointer; padding: 8px; border-radius: 8px; transition: background 0.2s; }
+        .tech-item:hover { background: rgba(255,255,255,0.05); }
+
+        .tooltip-box {
+            position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%) translateY(-10px); width: 260px;
+            background: rgba(15, 15, 20, 0.95); border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 20px rgba(var(--gradient-4), 0.2);
+            color: #e2e8f0; padding: 15px; border-radius: 12px; font-size: 0.85rem; line-height: 1.5; z-index: 100; opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(10px);
+        }
+        .tooltip-box::after {
+            content: ''; position: absolute; top: 100%; left: 50%; margin-left: -8px; border-width: 8px; border-style: solid;
+            border-color: rgba(15, 15, 20, 0.95) transparent transparent transparent;
+        }
+        .tech-item:hover .tooltip-box { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .tech-name { font-weight: 700; color: white; font-size: 1rem; margin-bottom: 2px; }
+        .tech-detail { font-size: 0.85rem; color: var(--text-muted); font-style: italic; }
+
+        .pipeline-container { display: flex; flex-direction: column; gap: 50px; margin-top: 20px; }
+        .pipeline-card {
+            background: rgba(20, 20, 28, 0.85); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 30px;
+            position: relative; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .pipeline-title {
+            font-family: 'Outfit'; font-size: 1.2rem; margin-bottom: 30px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .pipeline-title i { color: var(--gradient-4); }
+
+        .flow-diagram { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2; }
+        @keyframes nodePulse { 0% { box-shadow: 0 0 0 0 rgba(0, 224, 255, 0.1); } 70% { box-shadow: 0 0 0 10px rgba(0, 224, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(0, 224, 255, 0); } }
+
+        .flow-node {
+            background: rgba(40, 40, 50, 0.8); border: 1px solid rgba(255,255,255,0.1); padding: 15px 20px; border-radius: 12px;
+            text-align: center; min-width: 120px; transition: 0.3s; position: relative; animation: nodePulse 3s infinite;
+        }
+        .flow-node:nth-child(1) { animation-delay: 0s; }
+        .flow-node:nth-child(3) { animation-delay: 1s; }
+        .flow-node:nth-child(5) { animation-delay: 2s; }
+        .flow-node:nth-child(7) { animation-delay: 3s; }
+        .flow-node:hover { border-color: var(--gradient-4); background: rgba(0, 224, 255, 0.1); transform: translateY(-3px); box-shadow: 0 5px 20px rgba(0,0,0,0.3); animation: none; }
+
+        .node-icon { font-size: 1.5rem; margin-bottom: 8px; color: white; display: block; }
+        .node-label { font-size: 0.85rem; font-weight: 600; color: #e2e8f0; }
+        .node-sub { font-size: 0.7rem; color: #94a3b8; margin-top: 4px; display: block; }
+
+        .flow-arrow { flex-grow: 1; height: 2px; background: rgba(255,255,255,0.1); position: relative; min-width: 30px; overflow: hidden; }
+        .flow-arrow::after { content: '►'; position: absolute; right: -6px; top: -7px; font-size: 10px; color: rgba(255,255,255,0.3); }
+        .flow-arrow::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 20%; background: var(--gradient-4); filter: blur(2px); animation: flowMove 2s linear infinite; }
+        @keyframes flowMove { 0% { transform: translateX(-100%); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(600%); opacity: 0; } }
+
+        footer { margin-top: 100px; padding: 60px 0; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; color: var(--text-muted); background: linear-gradient(to top, rgba(255,255,255,0.05), transparent); }
+
+        /* --- MOBILE OPTIMIZATIONS --- */
+        @media (max-width: 900px) { 
+            /* Hide the Desktop Brand Container */
+            .brand-container { display: none; }
+
+            /* Show Mobile Nav Bar */
+            .mobile-nav-bar { display: flex; }
+
+            /* Adjust Container Padding */
+            .container { padding-top: 80px; } 
+
+            /* Adjust Header */
+            header { min-height: auto; padding-top: 40px; }
+            h1 { font-size: 3rem; } 
+            .hero-desc { font-size: 1.1rem; }
+
+            /* Switch pill position for mobile (inside the overlay or top right below header?) 
+               For now, let's keep it fixed but ensure it's below the header */
+            .pill-switch-container { top: 80px; right: 20px; z-index: 900; transform: scale(0.9); transform-origin: top right; }
+
+            /* Grid Adjustments */
+            .skills-grid { grid-template-columns: 1fr; }
+            .mindset-grid { grid-template-columns: 1fr; }
+
+            /* Flow Diagram Mobile */
+            .flow-diagram { flex-direction: column; align-items: stretch; }
+            .flow-arrow { height: 30px; width: 2px; margin: 0 auto; background: linear-gradient(to bottom, rgba(255,255,255,0.1), transparent); }
+            .flow-arrow::after { content: '▼'; top: auto; bottom: -8px; right: -4px; }
+            .flow-arrow::before { animation: flowMoveVertical 2s linear infinite; width: 100%; height: 20%; }
+            @keyframes flowMoveVertical { 0% { transform: translateY(-100%); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateY(600%); opacity: 0; } }
+
+            .tooltip-box { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="aurora-container">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+    </div>
+    <div class="hex-overlay"></div>
+
+    <!-- MOBILE NAV BAR (NEW) -->
+    <div class="mobile-nav-bar">
+        <a href="#" class="mobile-logo">Lucas Nieder-Fioletti</a>
+        <div class="mobile-toggle" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></div>
+    </div>
+
+    <!-- MOBILE MENU OVERLAY (NEW) -->
+    <div class="mobile-menu-overlay" id="mobileMenu">
+        <a href="#approach" class="mobile-link" onclick="toggleMobileMenu()">Approche</a>
+        <a href="#blueprints" class="mobile-link" onclick="toggleMobileMenu()">Pipelines</a>
+        <a href="#tech-stack" class="mobile-link" onclick="toggleMobileMenu()">Stack</a>
+        <a href="#experiences" class="mobile-link" onclick="toggleMobileMenu()">Experiences</a>
+        <a href="mailto:lucas.nieder-fioletti@outlook.com" class="mobile-link" onclick="toggleMobileMenu()">Contact</a>
+    </div>
+
+    <!-- BRAND NAME & NAVIGATION (DESKTOP ONLY) -->
+    <div class="brand-container">
+        <a href="#" class="brand-name">Lucas Nieder-Fioletti</a>
+        <nav class="nav-menu">
+            <a href="#approach" class="nav-link"><i class="fas fa-lightbulb"></i> Approche</a>
+            <a href="#blueprints" class="nav-link"><i class="fas fa-project-diagram"></i> Pipelines</a>
+            <a href="#tech-stack" class="nav-link"><i class="fas fa-layer-group"></i> Stack</a>
+            <a href="#experiences" class="nav-link"><i class="fas fa-briefcase"></i> Experiences</a>
+            <a href="mailto:lucas.nieder-fioletti@outlook.com" class="nav-link"><i class="fas fa-envelope"></i> Contact</a>
+        </nav>
+    </div>
+
+    <div class="pill-switch-container" onclick="toggleLang()">
+        <div class="pill-slider"></div>
+        <div class="pill-option fr">FR</div>
+        <div class="pill-option en">EN</div>
+    </div>
+
+    <div class="container">
+
+        <header>
+            <div class="hero-label fade-text" data-fr="Available for Freelance" data-en="Available for Freelance">Available for Freelance</div>
+
+            <h1 id="typing-title" class="fade-text" data-fr="Architecting<br>Liquid Data." data-en="Architecting<br>Liquid Data."></h1>
+
+            <p class="hero-desc fade-text" 
+               data-fr="&quot;Je sécurise le chaos par l'architecture et je le rends accessible par l'interface.&quot;<br><br>Spécialiste <strong>Palantir Foundry</strong> et Data Engineering, je construis des systèmes transactionnels robustes pour l'industrie."
+               data-en="&quot;I secure chaos through architecture and make it accessible through the interface.&quot;<br><br>Specialist in <strong>Palantir Foundry</strong> and Data Engineering, I build robust transactional systems for the industry.">
+               "Je sécurise le chaos par l'architecture et je le rends accessible par l'interface."<br><br>
+               Spécialiste <strong>Palantir Foundry</strong> et Data Engineering, je construis des systèmes transactionnels robustes pour l'industrie.
+            </p>
+            <div class="cta-group">
+                <a href="#approach" class="btn btn-primary fade-text" data-fr="Mon Approche" data-en="My Approach">Mon Approche</a>
+                <a href="mailto:lucas.nieder-fioletti@outlook.com" class="btn btn-secondary fade-text" data-fr="Me Contacter" data-en="Contact Me">Me Contacter</a>
+            </div>
+        </header>
+
+        <h2 id="approach" class="section-header fade-text" data-fr="Philosophie" data-en="Philosophy">Philosophie</h2>
+        <div class="mindset-grid">
+            <div class="mindset-card">
+                <div class="mindset-icon"><i class="fas fa-shield-alt"></i></div>
+                <div class="mindset-title">Robustesse & Sécurité</div>
+                <div class="mindset-text">Je ne code pas pour l'instant T, mais pour la durée. Tests unitaires (Jest), typage fort (TS) et gouvernance stricte (Ontology) sont mes standards pour éviter la dette technique.</div>
+            </div>
+            <div class="mindset-card">
+                <div class="mindset-icon"><i class="fas fa-users"></i></div>
+                <div class="mindset-title">User-Centric</div>
+                <div class="mindset-text">La donnée brute ne vaut rien si elle n'est pas utilisable. Je soigne l'UX (Workshop) pour que l'outil soit adopté, pas subi, par les métiers.</div>
+            </div>
+            <div class="mindset-card">
+                <div class="mindset-icon"><i class="fas fa-handshake"></i></div>
+                <div class="mindset-title">Pont Tech / Métier</div>
+                <div class="mindset-text">Je challenge le besoin fonctionnel avant de coder. Mon rôle est de traduire les enjeux business en architecture technique viable et performante.</div>
+            </div>
+        </div>
+
+        <h2 id="blueprints" class="section-header fade-text" data-fr="System Blueprints" data-en="System Blueprints">System Blueprints</h2>
+
+        <div class="pipeline-container">
+            <div class="pipeline-card">
+                <div class="pipeline-title"><i class="fas fa-cogs"></i> Data Factory Workflow</div>
+                <div class="flow-diagram">
+                    <div class="flow-node"><i class="fas fa-database node-icon" style="color:#fbbf24"></i><span class="node-label">Ingestion</span><span class="node-sub">SQL / API</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fas fa-fire node-icon" style="color:#f97316"></i><span class="node-label">Processing</span><span class="node-sub">PySpark / Airflow</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fas fa-layer-group node-icon" style="color:#a855f7"></i><span class="node-label">Modeling</span><span class="node-sub">Foundry Ontology</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fas fa-chart-pie node-icon" style="color:#22c55e"></i><span class="node-label">Viz</span><span class="node-sub">PowerBI / Dash</span></div>
+                </div>
+            </div>
+            <div class="pipeline-card">
+                <div class="pipeline-title"><i class="fas fa-code-branch"></i> AI & Dev Lifecycle</div>
+                <div class="flow-diagram">
+                    <div class="flow-node"><i class="fab fa-github node-icon" style="color:#fff"></i><span class="node-label">Code</span><span class="node-sub">GitHub / Copilot</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fas fa-robot node-icon" style="color:#38bdf8"></i><span class="node-label">Assist & Test</span><span class="node-sub">Gemini / TS Jest</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fab fa-docker node-icon" style="color:#0ea5e9"></i><span class="node-label">Container</span><span class="node-sub">Docker / Scaleway</span></div>
+                    <div class="flow-arrow"></div>
+                    <div class="flow-node"><i class="fas fa-server node-icon" style="color:#10b981"></i><span class="node-label">Deploy</span><span class="node-sub">FastAPI / Mongo</span></div>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="tech-stack" class="section-header fade-text" data-fr="Arsenal Technique" data-en="Technical Arsenal" style="margin-top:80px;">Arsenal Technique</h2>
+        <div class="skills-grid">
+            <div class="liquid-card skill-box">
+                <div class="skill-icon"><i class="fas fa-database"></i></div>
+                <div class="skill-title">Core Data</div>
+                <div class="tech-list-vertical">
+                    <div class="tech-item">
+                        <span class="tech-name">PostgreSQL & SQL</span>
+                        <span class="tech-detail">Complex Queries, PL/SQL</span>
+                        <div class="tooltip-box">SGBD relationnel robuste. Je l'utilise pour le stockage structuré, les requêtes complexes et l'optimisation des performances via indexation.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">MongoDB</span>
+                        <span class="tech-detail">NoSQL, Document Store</span>
+                        <div class="tooltip-box">Base NoSQL orientée documents. Idéale pour stocker des données semi-structurées ou des logs JSON massifs.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">Palantir Foundry</span>
+                        <span class="tech-detail">Ontology, Pipeline Builder</span>
+                        <div class="tooltip-box">OS de données complet. Je maîtrise Pipeline Builder pour l'ETL et l'Ontology pour modéliser les objets métiers et leurs relations.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="liquid-card skill-box">
+                <div class="skill-icon"><i class="fas fa-brain"></i></div> 
+                <div class="skill-title">AI & Tools</div>
+                <div class="tech-list-vertical">
+                    <div class="tech-item">
+                        <span class="tech-name">Gemini & LLMs</span>
+                        <span class="tech-detail">Doc Tech, Unit Tests, RAG</span>
+                        <div class="tooltip-box">Intégration de modèles de langage pour la génération de documentation, l'analyse sémantique et les tests unitaires automatisés.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">Python (FastAPI)</span>
+                        <span class="tech-detail">Async API, Cuda, Sklearn</span>
+                        <div class="tooltip-box">Développement d'API REST performantes et asynchrones. Utilisation de Pydantic pour la validation et Cuda pour l'accélération GPU.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">TypeScript & Tests</span>
+                        <span class="tech-detail">Jest, Workshop, UX Logic</span>
+                        <div class="tooltip-box">Développement de logique frontend robuste pour les interfaces Workshop. Tests unitaires rigoureux avec Jest pour garantir la fiabilité du code métier.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="liquid-card skill-box">
+                <div class="skill-icon"><i class="fab fa-github"></i></div>
+                <div class="skill-title">DevOps & Cloud</div>
+                <div class="tech-list-vertical">
+                    <div class="tech-item">
+                        <span class="tech-name">GitHub & CI/CD</span>
+                        <span class="tech-detail">Version Control, Actions</span>
+                        <div class="tooltip-box">Gestion de version et automatisation des déploiements via GitHub Actions. Stratégies de branching et Code Review.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">Docker & Linux</span>
+                        <span class="tech-detail">Containerization, Scripting</span>
+                        <div class="tooltip-box">Conteneurisation des applications pour assurer la portabilité. Scripting Bash pour l'automatisation des tâches système.</div>
+                    </div>
+                    <div class="tech-item">
+                        <span class="tech-name">Scaleway & GCP</span>
+                        <span class="tech-detail">Cloud Deployment</span>
+                        <div class="tooltip-box">Déploiement Cloud. Gestion des instances, du stockage objet (S3) et des réseaux privés virtuels.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="experiences" class="section-header fade-text" data-fr="Expériences Clés" data-en="Key Experiences">Expériences Clés</h2>
+        <div class="cards-grid" id="cards-container">
+             <div class="liquid-card featured">
+                <div class="exp-header">
+                    <div><div class="exp-role">Technical Lead Foundry</div><div class="exp-company">AIRBUS HELICOPTERS</div></div>
+                    <div class="exp-date fade-text" data-fr="2025 - Présent" data-en="2025 - Present">2025 - Présent</div>
+                </div>
+                <ul class="exp-list">
+                    <li class="fade-text" data-fr="Conception et architecture backend de l'application transactionnelle critique <strong>hdata</strong> pour la maintenance prédictive (Skywise)." data-en="Design and backend architecture of the critical transactional application <strong>hdata</strong> for predictive maintenance (Skywise).">Conception et architecture backend de l'application transactionnelle critique <strong>hdata</strong> pour la maintenance prédictive (Skywise).</li>
+                    <li class="fade-text" data-fr="Modélisation complexe de l'Ontology et logique métier en <strong>TypeScript</strong> (Code Repositories) sécurisée par des <strong>tests unitaires</strong> rigoureux." data-en="Complex Ontology modeling and business logic in <strong>TypeScript</strong> (Code Repositories) secured by rigorous <strong>unit tests</strong>.">Modélisation complexe de l'Ontology et logique métier en <strong>TypeScript</strong> (Code Repositories) sécurisée par des <strong>tests unitaires</strong> rigoureux.</li>
+                    <li class="fade-text" data-fr="Développement d'interfaces ergonomiques sous <strong>Workshop</strong> avec formulaires dynamiques et validations avancées pour sécuriser les saisies." data-en="Development of ergonomic interfaces under <strong>Workshop</strong> with dynamic forms and advanced validations to secure inputs.">Développement d'interfaces ergonomiques sous <strong>Workshop</strong> avec formulaires dynamiques et validations avancées pour sécuriser les saisies.</li>
+                </ul>
+                <div class="tech-flow">
+                    <div class="tech-badge">Palantir Foundry</div><div class="tech-badge">TypeScript</div><div class="tech-badge">Unit Testing</div><div class="tech-badge">Workshop</div>
+                </div>
+            </div>
+
+            <div class="liquid-card">
+                <div class="exp-header">
+                    <div><div class="exp-role">Géomatique Data Engineer</div><div class="exp-company">DATA FOR GOOD</div></div>
+                    <div class="exp-date">2025</div>
+                </div>
+                <ul class="exp-list">
+                    <li class="fade-text" data-fr="Analyse géospatiale massive sur la région PACA : exploitation de MNT/MNS pour dériver pentes et altitudes." data-en="Massive geospatial analysis on the PACA region: exploitation of DTM/DSM to derive slopes and altitudes.">Analyse géospatiale massive sur la région PACA : exploitation de MNT/MNS pour dériver pentes et altitudes.</li>
+                    <li class="fade-text" data-fr="Traitements vectoriels avancés sous <strong>QGIS</strong> et optimisation des flux via scripts Linux pour réduire les temps de calcul." data-en="Advanced vector processing under <strong>QGIS</strong> and flow optimization via Linux scripts to reduce computation times.">Traitements vectoriels avancés sous <strong>QGIS</strong> et optimisation des flux via scripts Linux pour réduire les temps de calcul.</li>
+                </ul>
+                <div class="tech-flow">
+                    <div class="tech-badge">QGIS</div><div class="tech-badge">Linux</div><div class="tech-badge">GeoPandas</div><div class="tech-badge">Spatial Analysis</div>
+                </div>
+            </div>
+
+            <div class="liquid-card">
+                <div class="exp-header">
+                    <div><div class="exp-role">MLOps Engineer</div><div class="exp-company">AIRBUS</div></div>
+                    <div class="exp-date">2024</div>
+                </div>
+                <ul class="exp-list">
+                    <li class="fade-text" data-fr="Mise en production d'un pipeline <strong>RAG</strong> complet : extraction de PDF, indexation sémantique et recherche via Elasticsearch." data-en="Production deployment of a complete <strong>RAG</strong> pipeline: PDF extraction, semantic indexing, and search via Elasticsearch.">Mise en production d'un pipeline <strong>RAG</strong> complet : extraction de PDF, indexation sémantique et recherche via Elasticsearch.</li>
+                    <li class="fade-text" data-fr="Développement d'une API <strong>FastAPI</strong> pour automatiser l'ingestion documentaire et servir les résultats au LLM." data-en="Development of a <strong>FastAPI</strong> API to automate document ingestion and serve results to the LLM.">Développement d'une API <strong>FastAPI</strong> pour automatiser l'ingestion documentaire et servir les résultats au LLM.</li>
+                    <li class="fade-text" data-fr="Optimisation du ranking sémantique (+40% de pertinence) via l'intégration de modèles d'embeddings." data-en="Semantic ranking optimization (+40% relevance) via the integration of embedding models.">Optimisation du ranking sémantique (+40% de pertinence) via l'intégration de modèles d'embeddings.</li>
+                </ul>
+                <div class="tech-flow">
+                    <div class="tech-badge">Hugging Face</div><div class="tech-badge">FastAPI</div><div class="tech-badge">ElasticSearch</div><div class="tech-badge">Python</div>
+                </div>
+            </div>
+
+            <div class="liquid-card">
+                <div class="exp-header">
+                    <div><div class="exp-role">DataOps Engineer</div><div class="exp-company">AIRBUS HELICOPTERS</div></div>
+                    <div class="exp-date">2023 - 2024</div>
+                </div>
+                <ul class="exp-list">
+                    <li class="fade-text" data-fr="Migration réussie de 20+ jobs Talend vers <strong>Apache Airflow</strong> et réduction de 40% des incidents de production grâce au monitoring automatisé." data-en="Successful migration of 20+ Talend jobs to <strong>Apache Airflow</strong> and 40% reduction in production incidents thanks to automated monitoring.">Migration réussie de 20+ jobs Talend vers <strong>Apache Airflow</strong> et réduction de 40% des incidents de production grâce au monitoring automatisé.</li>
+                    <li class="fade-text" data-fr="Mise en place d'un <strong>Data Lineage</strong> automatisé sur l'ensemble des flux SQL pour expliciter les dépendances et faciliter l'analyse d'impact." data-en="Implementation of automated <strong>Data Lineage</strong> on all SQL flows to explicit dependencies and facilitate impact analysis.">Mise en place d'un <strong>Data Lineage</strong> automatisé sur l'ensemble des flux SQL pour expliciter les dépendances et faciliter l'analyse d'impact.</li>
+                    <li class="fade-text" data-fr="Conception d'une 'Data Factory' en <strong>Python</strong> pour standardiser la création de DAGs et POC dbt pour la documentation des données." data-en="Design of a 'Data Factory' in <strong>Python</strong> to standardize DAG creation and dbt POC for data documentation.">Conception d'une "Data Factory" en <strong>Python</strong> pour standardiser la création de DAGs et POC dbt pour la documentation des données.</li>
+                </ul>
+                <div class="tech-flow">
+                    <div class="tech-badge">Apache Airflow</div><div class="tech-badge">Python</div><div class="tech-badge">SQL</div><div class="tech-badge">dbt</div><div class="tech-badge">GitHub</div>
+                </div>
+            </div>
+
+            <div class="liquid-card">
+                <div class="exp-header">
+                    <div><div class="exp-role">DataOps & Cloud API</div><div class="exp-company">IDATE DIGIWORLD</div></div>
+                    <div class="exp-date">2020 - 2022</div>
+                </div>
+                <ul class="exp-list">
+                    <li class="fade-text" data-fr="Migration intégrale du CRM (HubSpot vers Sendinblue) et développement d'un outil de redressement de données en Python." data-en="Full CRM migration (HubSpot to Sendinblue) and development of a data correction tool in Python.">Migration intégrale du CRM (HubSpot vers Sendinblue) et développement d'un outil de redressement de données en Python.</li>
+                    <li class="fade-text" data-fr="Conception d'une API commerciale REST (<strong>Node.js</strong>) et déploiement conteneurisé sur Docker." data-en="Design of a commercial REST API (<strong>Node.js</strong>) and containerized deployment on Docker.">Conception d'une API commerciale REST (<strong>Node.js</strong>) et déploiement conteneurisé sur Docker.</li>
+                </ul>
+                <div class="tech-flow">
+                    <div class="tech-badge">Node.JS</div><div class="tech-badge">MySQL</div><div class="tech-badge">Docker</div><div class="tech-badge">PowerBI</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <footer>
+        <p>© 2026 Lucas Nieder-Fioletti.</p>
+        <div style="font-size: 1.5rem; margin-top: 10px;">
+            <a href="https://linkedin.com/in/lucas-nieder-fioletti-20598a19a" style="color:white; margin:0 10px;"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:lucas.nieder-fioletti@outlook.com" style="color:white; margin:0 10px;"><i class="fas fa-envelope"></i></a>
+        </div>
+    </footer>
+    <script>
+        let currentLang = 'fr';
+        let typingTimeouts = []; 
+
+        const titleElement = document.getElementById('typing-title');
+        const textLinesFr = ["Architecting", "Liquid Data."];
+        const textLinesEn = ["Architecting", "Liquid Data."];
+
+        // --- MOBILE MENU LOGIC ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const toggleIcon = document.querySelector('.mobile-toggle i');
+
+            menu.classList.toggle('active');
+
+            if (menu.classList.contains('active')) {
+                toggleIcon.classList.remove('fa-bars');
+                toggleIcon.classList.add('fa-times');
+            } else {
+                toggleIcon.classList.remove('fa-times');
+                toggleIcon.classList.add('fa-bars');
+            }
+        }
+
+        async function typeWriter(textArray) {
+            typingTimeouts.forEach(clearTimeout);
+            typingTimeouts = [];
+
+            titleElement.innerHTML = "";
+            let accumulatedDelay = 0;
+
+            for (let i = 0; i < textArray.length; i++) {
+                const line = textArray[i];
+                let lineSpan;
+
+                typingTimeouts.push(setTimeout(() => {
+                    lineSpan = document.createElement('span');
+                    titleElement.appendChild(lineSpan);
+                    if (i < textArray.length - 1) {
+                        const br = document.createElement('br');
+                        titleElement.appendChild(br);
+                    }
+                }, accumulatedDelay));
+
+                for (let j = 0; j < line.length; j++) {
+                    typingTimeouts.push(setTimeout(() => {
+                        if(lineSpan) lineSpan.innerHTML += line[j];
+                        else {
+                            const spans = titleElement.getElementsByTagName('span');
+                            if(spans.length > 0) spans[spans.length-1].innerHTML += line[j];
+                        }
+                    }, accumulatedDelay));
+                    accumulatedDelay += 60;
+                }
+
+                accumulatedDelay += 200;
+            }
+
+            typingTimeouts.push(setTimeout(() => {
+                const existingCursors = titleElement.getElementsByClassName('cursor');
+                while(existingCursors.length > 0){
+                    existingCursors[0].parentNode.removeChild(existingCursors[0]);
+                }
+                const cursor = document.createElement('span');
+                cursor.className = "cursor";
+                titleElement.appendChild(cursor);
+            }, accumulatedDelay));
+        }
+
+        document.body.onmousemove = e => {
+            for(const card of document.getElementsByClassName("liquid-card")) {
+                const rect = card.getBoundingClientRect(), x = e.clientX - rect.left, y = e.clientY - rect.top;
+                card.style.setProperty("--mouse-x", `${x}px`);
+                card.style.setProperty("--mouse-y", `${y}px`);
+            };
+        }
+
+        function toggleLang() {
+            const newLang = currentLang === 'fr' ? 'en' : 'fr';
+
+            const pillContainer = document.querySelector('.pill-switch-container');
+            if (newLang === 'en') {
+                pillContainer.classList.add('en-active');
+            } else {
+                pillContainer.classList.remove('en-active');
+            }
+
+            const elements = document.querySelectorAll('.fade-text');
+            elements.forEach(el => {
+                if (el.id !== 'typing-title') {
+                    el.classList.add('hiding');
+                }
+            });
+
+            typeWriter(newLang === 'fr' ? textLinesFr : textLinesEn);
+
+            setTimeout(() => {
+                elements.forEach(el => {
+                    if(el.hasAttribute('data-' + newLang) && el.id !== 'typing-title') {
+                        el.innerHTML = el.getAttribute('data-' + newLang);
+                    }
+                    el.classList.remove('hiding'); 
+                });
+            }, 300);
+
+            currentLang = newLang;
+        }
+
+        window.onload = () => {
+            typeWriter(textLinesFr);
+        };
+    </script>
+</body>
+</html>
