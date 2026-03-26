@@ -1,7 +1,7 @@
 # 🔷 Portfolio - Lucas Nieder-Fioletti
 
 Ce projet est le code source du portfolio personnel de **Lucas Nieder-Fioletti**, Data Engineer. 
-Il présente une interface moderne, sombre et immersive ("Vivid Hive"), mettant en avant une expertise en architecture de données, Palantir Foundry et développement Fullstack.
+Il présente une interface moderne, sombre et immersive, mettant en avant une expertise en architecture de données et développement Fullstack.
 
 ## 🚀 Fonctionnalités Clés
 
